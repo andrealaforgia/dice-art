@@ -39,10 +39,6 @@ public class Color {
         return this.rgb == 0;
     }
 
-    public boolean isGray() {
-        return this.r == this.b && this.b == this.g;
-    }
-
     public Color toGrayScale() {
         int grayscaleShade = (int) (this.r * 0.3 + this.r * 0.59 + this.r * 0.11);
         return new Color(grayscaleShade, grayscaleShade, grayscaleShade);
