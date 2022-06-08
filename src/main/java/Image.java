@@ -44,15 +44,7 @@ public class Image {
         return this.image.getHeight();
     }
 
-    public void setPixel(int x, int y, int r, int g, int b) {
-        this.image.setRGB(x, y, new Color(r, g, b).getRgb());
-    }
-
     public void setPixelRgb(int x, int y, int rgb) {
         this.image.setRGB(x, y, rgb);
-    }
-
-    public void setPixelGray(int x, int y, int g) {
-        this.image.setRGB(x, y, new Color(g, g, g).getRgb());
     }
 }
