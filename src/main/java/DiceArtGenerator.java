@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Map;
 
 public class DiceArtGenerator {
@@ -6,15 +5,21 @@ public class DiceArtGenerator {
     private static final int DIE_BOX_SIZE = 10;
     private static final int DIE_SIZE = 10;
 
-    private static Map<Integer, List<Integer>> DIE_TO_GRAYSCALE_RANGE_MAP = Map.of(
-            0, List.of(255 * 0 / 7, 255 * 1 / 7),
-            1, List.of(255 * 1 / 7, 255 * 2 / 7),
-            2, List.of(255 * 2 / 7, 255 * 3 / 7),
-            3, List.of(255 * 3 / 7, 255 * 4 / 7),
-            4, List.of(255 * 4 / 7, 255 * 5 / 7),
-            5, List.of(255 * 5 / 7, 255 * 6 / 7),
-            6, List.of(255 * 6 / 7, 255 * 7 / 7)
-    );
+    private Map<Integer, IntRange> dieToGrayscaleRangeMap;
+
+    public DiceArtGenerator() {
+        dieToGrayscaleRangeMap = GrayscaleRangeMapGenerator.generate();
+    }
+
+//    private static Map<Integer, List<Integer>> DIE_TO_GRAYSCALE_RANGE_MAP = Map.of(
+//            0, List.of(255 * 0 / 7, 255 * 1 / 7),
+//            1, List.of(255 * 1 / 7, 255 * 2 / 7),
+//            2, List.of(255 * 2 / 7, 255 * 3 / 7),
+//            3, List.of(255 * 3 / 7, 255 * 4 / 7),
+//            4, List.of(255 * 4 / 7, 255 * 5 / 7),
+//            5, List.of(255 * 5 / 7, 255 * 6 / 7),
+//            6, List.of(255 * 6 / 7, 255 * 7 / 7)
+//    );
 
     public Image generate(Image sourceImage) {
         Image diceArtImage = new Image(
@@ -34,55 +39,60 @@ public class DiceArtGenerator {
     }
 
     private void drawDie(int x, int y, int die, Image image) {
-        int dotColor = new Color(255, 255, 255).getRgb();
-        for (int yy = 0; y < DIE_SIZE; y++) {
-            for (int xx = 0; x < DIE_SIZE; x++) {
-                image.setPixelRgb(x + xx, y + yy, 0);
+        int dieColor = Color.black();
+        int dieDotColor = Color.white();
+        if (die > 6) {
+            dieColor = Color.white();
+            dieDotColor = Color.black();
+        }
+        if (die <= 6) {
+            return;
+        }
+        for (int yy = 0; yy < DIE_SIZE; yy++) {
+            for (int xx = 0; xx < DIE_SIZE; xx++) {
+                image.setPixelRgb(x + xx, y + yy, dieColor);
             }
         }
-        if (die == 1) {
-            drawDot(x+4, y+4, dotColor, image);
-        } else if (die == 2) {
-            drawDot(x+1, y+1, dotColor, image);
-            drawDot(x+7, y+7, dotColor, image);
-        } else if (die == 3) {
-            drawDot(x+1, y+1, dotColor, image);
-            drawDot(x+4, y+4, dotColor, image);
-            drawDot(x+7, y+7, dotColor, image);
-        } else if (die == 4) {
-            drawDot(x+1, y+1, dotColor, image);
-            drawDot(x+1, y+7, dotColor, image);
-            drawDot(x+7, y+1, dotColor, image);
-            drawDot(x+7, y+7, dotColor, image);
-        } else if (die == 5) {
-            drawDot(x+1, y+1, dotColor, image);
-            drawDot(x+1, y+7, dotColor, image);
-            drawDot(x+7, y+1, dotColor, image);
-            drawDot(x+7, y+7, dotColor, image);
-            drawDot(x+4, y+4, dotColor, image);
-        } else if (die == 6) {
-            drawDot(x+1, y+1, dotColor, image);
-            drawDot(x+1, y+4, dotColor, image);
-            drawDot(x+1, y+7, dotColor, image);
-            drawDot(x+7, y+1, dotColor, image);
-            drawDot(x+7, y+4, dotColor, image);
-            drawDot(x+7, y+7, dotColor, image);
+        if (die == 1 || die == 12) {
+            drawDot(x + 4, y + 4, dieDotColor, image);
+        } else if (die == 2 || die == 11) {
+            drawDot(x + 1, y + 1, dieDotColor, image);
+            drawDot(x + 7, y + 7, dieDotColor, image);
+        } else if (die == 3 || die == 10) {
+            drawDot(x + 1, y + 1, dieDotColor, image);
+            drawDot(x + 4, y + 4, dieDotColor, image);
+            drawDot(x + 7, y + 7, dieDotColor, image);
+        } else if (die == 4 || die == 9) {
+            drawDot(x + 1, y + 1, dieDotColor, image);
+            drawDot(x + 1, y + 7, dieDotColor, image);
+            drawDot(x + 7, y + 1, dieDotColor, image);
+            drawDot(x + 7, y + 7, dieDotColor, image);
+        } else if (die == 5 || die == 8) {
+            drawDot(x + 1, y + 1, dieDotColor, image);
+            drawDot(x + 1, y + 7, dieDotColor, image);
+            drawDot(x + 7, y + 1, dieDotColor, image);
+            drawDot(x + 7, y + 7, dieDotColor, image);
+            drawDot(x + 4, y + 4, dieDotColor, image);
+        } else if (die == 6 || die == 7) {
+            drawDot(x + 1, y + 1, dieDotColor, image);
+            drawDot(x + 1, y + 4, dieDotColor, image);
+            drawDot(x + 1, y + 7, dieDotColor, image);
+            drawDot(x + 7, y + 1, dieDotColor, image);
+            drawDot(x + 7, y + 4, dieDotColor, image);
+            drawDot(x + 7, y + 7, dieDotColor, image);
         }
     }
 
     private void drawDot(int x, int y, int dotColor, Image image) {
         image.setPixelRgb(x, y, dotColor);
-        image.setPixelRgb(x+1, y, dotColor);
-        image.setPixelRgb(x+1, y+1, dotColor);
-        image.setPixelRgb(x, y+1, dotColor);
+        image.setPixelRgb(x + 1, y, dotColor);
+        image.setPixelRgb(x + 1, y + 1, dotColor);
+        image.setPixelRgb(x, y + 1, dotColor);
     }
 
     private int getDie(Pixel pixel) {
-        return DIE_TO_GRAYSCALE_RANGE_MAP.entrySet().stream()
-                .filter(entry -> {
-                    List<Integer> grayscaleRange = entry.getValue();
-                    return pixel.getColor().toGrayScale().isInGrayscaleRange(grayscaleRange.get(0), grayscaleRange.get(1));
-                })
+        return dieToGrayscaleRangeMap.entrySet().stream()
+                .filter(entry -> entry.getValue().in(pixel.getColor().toGrayScale().getR()))
                 .map(Map.Entry::getKey)
                 .findFirst()
                 .get();

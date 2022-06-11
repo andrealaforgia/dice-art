@@ -19,12 +19,12 @@ public class Color {
         this.b = this.rgb & 0xFF;
     }
 
-    public boolean isInGrayscaleRange(Integer min, Integer max) {
-        return this.r >= min && this.r <= max;
+    public static int black() {
+        return new Color(0, 0, 0).getRgb();
     }
 
-    private int removeAlpha(int rgb) {
-        return rgb & 0x00FFFFFF;
+    public static int white() {
+        return new Color(255, 255, 255).getRgb();
     }
 
     public int getRgb() {
@@ -40,7 +40,23 @@ public class Color {
     }
 
     public Color toGrayScale() {
-        int grayscaleShade = (int) (this.r * 0.3 + this.r * 0.59 + this.r * 0.11);
+        int grayscaleShade = (int) (this.r * 0.3 + this.g * 0.59 + this.b * 0.11);
         return new Color(grayscaleShade, grayscaleShade, grayscaleShade);
+    }
+
+    public int getR() {
+        return r;
+    }
+
+    public int getG() {
+        return g;
+    }
+
+    public int getB() {
+        return b;
+    }
+
+    private int removeAlpha(int rgb) {
+        return rgb & 0x00FFFFFF;
     }
 }
