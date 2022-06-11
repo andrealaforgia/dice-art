@@ -14,6 +14,11 @@ public class IntRange {
         return Objects.hash(min, max);
     }
 
+    @Override
+    public String toString() {
+        return String.format("[%d,%d]", min, max);
+    }
+
     private final int min;
     private final int max;
 

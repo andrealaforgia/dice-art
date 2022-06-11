@@ -2,51 +2,41 @@ import java.util.Map;
 
 public class DiceArtGenerator {
 
-    private static final int DIE_BOX_SIZE = 10;
     private static final int DIE_SIZE = 10;
 
     private Map<Integer, IntRange> dieToGrayscaleRangeMap;
 
-    public DiceArtGenerator() {
-        dieToGrayscaleRangeMap = GrayscaleRangeMapGenerator.generate();
-    }
+    public Image generate(Image sourceImage, DieSet dieSet) {
+        dieToGrayscaleRangeMap = GrayscaleRangeMapGenerator.generate(dieSet);
 
-//    private static Map<Integer, List<Integer>> DIE_TO_GRAYSCALE_RANGE_MAP = Map.of(
-//            0, List.of(255 * 0 / 7, 255 * 1 / 7),
-//            1, List.of(255 * 1 / 7, 255 * 2 / 7),
-//            2, List.of(255 * 2 / 7, 255 * 3 / 7),
-//            3, List.of(255 * 3 / 7, 255 * 4 / 7),
-//            4, List.of(255 * 4 / 7, 255 * 5 / 7),
-//            5, List.of(255 * 5 / 7, 255 * 6 / 7),
-//            6, List.of(255 * 6 / 7, 255 * 7 / 7)
-//    );
-
-    public Image generate(Image sourceImage) {
         Image diceArtImage = new Image(
-                sourceImage.getWidth() * DIE_BOX_SIZE,
-                sourceImage.getHeight() * DIE_BOX_SIZE
+                sourceImage.getWidth() * DIE_SIZE,
+                sourceImage.getHeight() * DIE_SIZE
         );
 
         sourceImage.forEachPixel(
                 pixel -> drawDie(
-                        pixel.getX() * DIE_BOX_SIZE,
-                        pixel.getY() * DIE_BOX_SIZE,
+                        pixel.getX() * DIE_SIZE,
+                        pixel.getY() * DIE_SIZE,
                         getDie(pixel),
-                        diceArtImage
+                        diceArtImage,
+                        dieSet
                 )
         );
         return diceArtImage;
     }
 
-    private void drawDie(int x, int y, int die, Image image) {
+    private void drawDie(int x, int y, int die, Image image, DieSet dieSet) {
         int dieColor = Color.black();
         int dieDotColor = Color.white();
-        if (die > 6) {
+        if ((dieSet == DieSet.BLACK_AND_WHITE && die > 6) || dieSet == DieSet.WHITE) {
             dieColor = Color.white();
             dieDotColor = Color.black();
         }
-        if (die <= 6) {
-            return;
+        for (int yy = 0; yy < DIE_SIZE; yy++) {
+            for (int xx = 0; xx < DIE_SIZE; xx++) {
+                image.setPixelRgb(x + xx, y + yy, dieColor);
+            }
         }
         for (int yy = 0; yy < DIE_SIZE; yy++) {
             for (int xx = 0; xx < DIE_SIZE; xx++) {

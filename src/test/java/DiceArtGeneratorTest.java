@@ -12,7 +12,7 @@ class DiceArtGeneratorTest {
         Image sourceImage = TestUtils.givenImage("mickey.jpeg");
 
         // when
-        Image diceArtImage = new DiceArtGenerator().generate(sourceImage);
+        Image diceArtImage = new DiceArtGenerator().generate(sourceImage, DieSet.BLACK_AND_WHITE);
 
         // then
         assertThatDiceArtImagesWereGeneratedAsExpected(sourceImage, diceArtImage);
